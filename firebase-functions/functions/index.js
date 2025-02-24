@@ -1,10 +1,22 @@
 const functions = require('firebase-functions');
 const app = require('express')();
 const auth = require('./util/auth')
-
 const cors = require('cors');
-app.use(cors());
-const {body,check} = require('express-validator')
+// app.use(cors({
+//   origin: true,
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   credentials: true,
+//   allowedHeaders: ['Content-Type', 'Authorization']
+// }));
+
+app.use(cors({
+  origin: ['http://localhost:3004', 'https://gameseru.vercel.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
+const { body, check } = require('express-validator')
+
 
 
 const {
@@ -41,5 +53,5 @@ app.get('/user', auth, getAuthenticatedUser);
 app.post('/games/:slug', auth, addComment)
 app.get('/games/:slug', getComments)
 
-exports.api = functions.region('europe-west1').https.onRequest(app)
+exports.api = functions.region('asia-southeast1').https.onRequest(app)
 

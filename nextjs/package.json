@@ -8,6 +8,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@svgr/webpack": "^5.4.0",
     "axios": "^0.19.2",
+    "caniuse-lite": "^1.0.30001700",
     "clsx": "latest",
     "dayjs": "^1.8.34",
     "formik": "^2.1.5",
@@ -30,7 +31,7 @@
     "yup": "^0.29.3"
   },
   "scripts": {
-    "dev": "next",
+    "dev": "NODE_OPTIONS='--openssl-legacy-provider' next dev -p 3004",
     "build": "next build",
     "start": "next start",
     "postbuild": "node scripts/sitemap.js",

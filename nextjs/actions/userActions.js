@@ -1,23 +1,32 @@
 import * as types from './types';
-
 import { instance } from '../src/utils/axios';
 
-export const signUpUser = (userData, router) => dispatch => {
+export const signUpUser = (newUserData, router) => dispatch => {
   dispatch({ type: types.LOADING_USER });
   instance
-    .post('/signup', userData)
+    .post('/signup', newUserData)
     .then(res => {
-      setAuthorizationHeader(res.data.token);
-      dispatch(getAuthenticatedUser());
-      router.push('/');
+      if (res.data.token) {
+        setAuthorizationHeader(res.data.token);
+        dispatch(getAuthenticatedUser());
+        dispatch({ type: types.CLEAR_ERRORS });
+        router.push('/');
+      } else {
+        dispatch({
+          type: types.SET_ERRORS,
+          payload: 'No token received from server'
+        });
+      }
     })
     .catch(err => {
+      console.error('Signup Error:', err);
       dispatch({
         type: types.SET_ERRORS,
-        payload: err.response.data.general,
+        payload: err.response?.data?.general || 'Network error occurred during signup'
       });
     });
 };
+
 
 export const signInUser = (userData, router) => dispatch => {
   dispatch({ type: types.LOADING_USER });
